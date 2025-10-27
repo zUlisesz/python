@@ -1,0 +1,58 @@
+grafo = {
+    "nodoA": [("nodoB", 1), ("nodoC", 2)],
+    "nodoB": [("nodoA", 1), ("nodoD", 1), ("nodoC", 3)],
+    "nodoC": [("nodoB", 3), ("nodoA", 2), ("nodoD", 2)],
+    "nodoD": [("nodoB", 1), ("nodoC", 2)],
+}
+
+def kruskal(grafo):
+    aristas = []
+    for element in grafo:
+        for nodo, peso in grafo[element]:
+            if (nodo, element, peso) not in aristas:  
+                aristas.append((element,nodo , peso))
+
+   
+    aristas.sort(key=lambda x: x[2])
+
+    
+    conjuntos = {nodo: {nodo} for nodo in grafo}
+
+    
+    mst = []
+    peso_total = 0
+
+    
+    for u, v, peso in aristas:
+        
+        conjunto_u = None
+        conjunto_v = None
+
+        for conjunto in conjuntos.values():
+            if u in conjunto:
+                conjunto_u = conjunto
+            if v in conjunto:
+                conjunto_v = conjunto
+                
+        if conjunto_u != conjunto_v:
+            mst.append((u, v, peso))
+            peso_total += peso
+
+            
+            nuevo_conjunto = conjunto_u.union(conjunto_v)
+
+            
+            for nodo in nuevo_conjunto:
+                conjuntos[nodo] = nuevo_conjunto
+
+    return mst, peso_total
+
+
+
+mst, peso_total = kruskal(grafo)
+
+print("Árbol de Expansión Mínima (Kruskal):")
+for u, v, peso in mst:
+    print(f"{u} - {v} : {peso}")
+
+print(f"Peso total del MST: {peso_total}")
