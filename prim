@@ -1,0 +1,46 @@
+# Implementación de Prim sin librerías externas
+
+grafo = {
+    "nodoA": [("nodoB", 1), ("nodoC", 2)],
+    "nodoB": [("nodoA", 1), ("nodoD", 1), ("nodoC", 3)],
+    "nodoC": [("nodoB", 3), ("nodoA", 2), ("nodoD", 2)],
+    "nodoD": [("nodoB", 1), ("nodoC", 2)]
+}
+
+def prim(grafo, inicio):
+    visitados = set([inicio])  
+    aristas_mst = []           
+    total = 0                  
+
+    
+    while len(visitados) < len(grafo):
+        menor_peso = float("inf")
+        nodo_origen = None
+        nodo_destino = None
+
+        
+        for nodo in visitados:
+            for vecino, peso in grafo[nodo]:
+                if vecino not in visitados and peso < menor_peso:
+                    menor_peso = peso
+                    nodo_origen = nodo
+                    nodo_destino = vecino
+
+        
+        if nodo_destino:
+            visitados.add(nodo_destino)
+            aristas_mst.append((nodo_origen, nodo_destino, menor_peso))
+            total += menor_peso
+
+    return aristas_mst, total
+
+
+
+mst, peso_total = prim(grafo, "nodoA")
+
+
+print("Árbol de Expansión Mínima (Prim):")
+for arista in mst:
+    print(f"{arista[0]} -- {arista[2]} --> {arista[1]}")
+
+print(f"\nPeso total del árbol: {peso_total}")
