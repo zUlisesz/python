@@ -7,51 +7,43 @@ grafo = {
 
 def kruskal(grafo):
     aristas = []
-    for element in grafo:
-        for nodo, peso in grafo[element]:
-            if (nodo, element, peso) not in aristas:  
-                aristas.append((element,nodo , peso))
+    for origen in grafo:
+        for destino, peso in grafo[origen]:
+            if (destino, origen, peso) not in aristas:
+                aristas.append((origen, destino, peso))
 
-   
     aristas.sort(key=lambda x: x[2])
 
-    
     conjuntos = {nodo: {nodo} for nodo in grafo}
 
-    
     mst = []
-    costo = 0
+    costo_total = 0
 
     
-    for salida , llegada peso in aristas:
-        
-        salidas = None
-        llegadas = None
+    for origen, destino, peso in aristas:
+        conjunto_origen = None
+        conjunto_destino = None
 
         for conjunto in conjuntos.values():
-            if salida  in conjunto:
-                salidas = conjunto
-            if llegada in conjunto:
-                llegadas  = conjunto
-                
-        if salidas != llegadas:
-            mst.append((salida, llegada , peso))
-            costo += peso
+            if origen in conjunto:
+                conjunto_origen = conjunto
+            if destino in conjunto:
+                conjunto_destino = conjunto
 
-            
-            nuevo_conjunto = salidas.union(llegadas)
+        if conjunto_origen != conjunto_destino:
+            mst.append((origen, destino, peso))
+            costo_total += peso
 
-            
+            nuevo_conjunto = conjunto_origen.union(conjunto_destino)
             for nodo in nuevo_conjunto:
                 conjuntos[nodo] = nuevo_conjunto
 
-    return mst, costo
-
+    return mst, costo_total
 
 
 mst, costo = kruskal(grafo)
 
 for salida, llegada, peso in mst:
-    print(f"de {u} a  {v} con costo: {peso}")
+    print(f" - de {salida} a {llegada} con costo: {peso}")
 
-print(f"Costo de la ruta {costo}")
+print(f"\nCosto total : {costo}")
