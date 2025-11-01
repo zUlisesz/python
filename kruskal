@@ -20,39 +20,38 @@ def kruskal(grafo):
 
     
     mst = []
-    peso_total = 0
+    costo = 0
 
     
-    for u, v, peso in aristas:
+    for salida , llegada peso in aristas:
         
-        conjunto_u = None
-        conjunto_v = None
+        salidas = None
+        llegadas = None
 
         for conjunto in conjuntos.values():
-            if u in conjunto:
-                conjunto_u = conjunto
-            if v in conjunto:
-                conjunto_v = conjunto
+            if salida  in conjunto:
+                salidas = conjunto
+            if llegada in conjunto:
+                llegadas  = conjunto
                 
-        if conjunto_u != conjunto_v:
-            mst.append((u, v, peso))
-            peso_total += peso
+        if salidas != llegadas:
+            mst.append((salida, llegada , peso))
+            costo += peso
 
             
-            nuevo_conjunto = conjunto_u.union(conjunto_v)
+            nuevo_conjunto = salidas.union(llegadas)
 
             
             for nodo in nuevo_conjunto:
                 conjuntos[nodo] = nuevo_conjunto
 
-    return mst, peso_total
+    return mst, costo
 
 
 
-mst, peso_total = kruskal(grafo)
+mst, costo = kruskal(grafo)
 
-print("Árbol de Expansión Mínima (Kruskal):")
-for u, v, peso in mst:
-    print(f"{u} - {v} : {peso}")
+for salida, llegada, peso in mst:
+    print(f"de {u} a  {v} con costo: {peso}")
 
-print(f"Peso total del MST: {peso_total}")
+print(f"Costo de la ruta {costo}")
