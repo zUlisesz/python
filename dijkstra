@@ -52,7 +52,21 @@ def dijkstra(grafo, inicio):
     return tabla
 
 
-tabla = dijkstra(grafo, "nodoA")
 
+costo = 0 
+costos = []
+for x in grafo:
+    tabla = dijkstra(grafo, str(x))
+    for nodo, (peso, sucesores) in tabla.items():
+        costo +=peso
+        #print(f"|{x}| a |{nodo} | -> | {peso} | pasando por | {', '.join(sucesores)} |")
+
+    costos.append( ( costo , x))
+    #print(f'Costo total de todas las rutas {costo}')
+    costo = 0 
+
+l = sorted(costos)
+print(f'El nodo desde el cual las distancias son las menores es {l[0][1]} y el peso es {l[0][0]}' )
+tabla = dijkstra(grafo, str(l[0][1]))
 for nodo, (peso, sucesores) in tabla.items():
-    print(f"|nodoA| a |{nodo} | -> | {peso} | pasando por | {', '.join(sucesores)} |")
+        print(f"|{l[0][1]}| a |{nodo} | -> | {peso} | pasando por | {', '.join(sucesores)} |")
